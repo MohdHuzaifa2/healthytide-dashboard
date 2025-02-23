@@ -18,18 +18,20 @@ const App = () => (
         <div className="min-h-screen bg-gray-50 font-sans">
           <Toaster />
           <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/patients" element={<Patients />} />
-            <Route path="/patients/:id" element={<PatientDetails />} />
-            <Route path="/messages" element={<NotFound />} />
-            <Route path="/appointments" element={<NotFound />} />
-            <Route path="/records" element={<NotFound />} />
-            <Route path="/analytics" element={<NotFound />} />
-            <Route path="/billing" element={<NotFound />} />
-            <Route path="/settings" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="flex">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/patients" element={<Patients />} />
+              <Route path="/patients/:id" element={<PatientDetails />} />
+              <Route path="/messages" element={<NotFound />} />
+              <Route path="/appointments" element={<NotFound />} />
+              <Route path="/records" element={<NotFound />} />
+              <Route path="/analytics" element={<NotFound />} />
+              <Route path="/billing" element={<NotFound />} />
+              <Route path="/settings" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
         </div>
       </TooltipProvider>
     </BrowserRouter>

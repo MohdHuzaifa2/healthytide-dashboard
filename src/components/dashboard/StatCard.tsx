@@ -26,7 +26,7 @@ const StatCard: React.FC<StatCardProps> = ({
   return (
     <div className="bg-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300">
       <h3 className="text-gray-500 text-sm font-medium">{title}</h3>
-      <div className="flex items-center justify-between mt-2">
+      <div className="flex flex-col gap-4 mt-2">
         <div>
           <p className="text-2xl font-semibold">{value}</p>
           <p className="text-sm mt-1">
@@ -36,7 +36,7 @@ const StatCard: React.FC<StatCardProps> = ({
             <span className="text-gray-400 ml-1">Since last week</span>
           </p>
         </div>
-        <div className="h-16 w-24">
+        <div className="h-16 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data}>
               <defs>
@@ -75,4 +75,3 @@ const StatCard: React.FC<StatCardProps> = ({
 };
 
 export default StatCard;
-
