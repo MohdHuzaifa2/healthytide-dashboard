@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Bell, Search } from 'lucide-react';
 import StatCard from '@/components/dashboard/StatCard';
@@ -96,28 +97,33 @@ const Index = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <header className="bg-white border-b border-gray-200 px-8 py-4 flex-none">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search anything here ..."
-                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
-              <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+      <div className="sticky top-0 z-10 bg-white">
+        <div className="border-b border-gray-200 px-8 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold">Dashboard</h1>
+            <div className="flex items-center gap-6">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search anything here ..."
+                  className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+                <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+              </div>
+              <button className="relative">
+                <Bell className="w-6 h-6 text-gray-600" />
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+              <Avatar className="w-8 h-8">
+                <img src="/placeholder.svg" alt="User" />
+              </Avatar>
             </div>
-            <button className="relative">
-              <Bell className="w-6 h-6 text-gray-600" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <Avatar className="w-8 h-8">
-              <img src="/placeholder.svg" alt="User" />
-            </Avatar>
           </div>
         </div>
-        <div className="flex gap-8 mt-6">
+      </div>
+
+      <div className="bg-white border-b border-gray-200 px-8">
+        <div className="flex gap-8">
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-1 py-2 transition-colors ${
@@ -159,7 +165,7 @@ const Index = () => {
             Diagnose
           </button>
         </div>
-      </header>
+      </div>
       
       <div className="flex-1 p-8 overflow-auto">
         {renderTabContent()}
@@ -169,3 +175,4 @@ const Index = () => {
 };
 
 export default Index;
+
