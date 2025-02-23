@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Bell, Search } from 'lucide-react';
 import Sidebar from '@/components/dashboard/Sidebar';
 import StatCard from '@/components/dashboard/StatCard';
@@ -14,7 +14,8 @@ const stats = [
     value: '6025',
     change: '66.89%',
     trend: [3, 7, 5, 9, 4, 6, 8],
-    trendColor: '#4B67F4',
+    trendColor: '#9b87f5',
+    lightColor: '#D6BCFA',
     isPositive: true,
   },
   {
@@ -22,7 +23,8 @@ const stats = [
     value: '4152',
     change: '41.1%',
     trend: [4, 6, 3, 8, 5, 7, 4],
-    trendColor: '#4B67F4',
+    trendColor: '#0EA5E9',
+    lightColor: '#D3E4FD',
     isPositive: true,
   },
   {
@@ -30,7 +32,8 @@ const stats = [
     value: '5948',
     change: '92.05%',
     trend: [8, 3, 7, 4, 9, 5, 6],
-    trendColor: '#F97171',
+    trendColor: '#F97316',
+    lightColor: '#FEC6A1',
     isPositive: false,
   },
   {
@@ -38,12 +41,61 @@ const stats = [
     value: '5626',
     change: '27.47%',
     trend: [5, 8, 4, 7, 3, 6, 9],
-    trendColor: '#4B67F4',
+    trendColor: '#8B5CF6',
+    lightColor: '#F2FCE2',
     isPositive: true,
   },
 ];
 
+type Tab = 'overview' | 'medical-reports' | 'patients-overview' | 'diagnose';
+
 const Index = () => {
+  const [activeTab, setActiveTab] = useState<Tab>('overview');
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'overview':
+        return (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+              {stats.map((stat) => (
+                <StatCard key={stat.title} {...stat} />
+              ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <RevenueChart />
+              </div>
+              <div>
+                <DiagnosisChart />
+              </div>
+            </div>
+            <div className="mt-6">
+              <Schedule />
+            </div>
+          </>
+        );
+      case 'medical-reports':
+        return (
+          <div className="p-4 text-center text-gray-500">
+            Medical Reports content coming soon
+          </div>
+        );
+      case 'patients-overview':
+        return (
+          <div className="p-4 text-center text-gray-500">
+            Patients Overview content coming soon
+          </div>
+        );
+      case 'diagnose':
+        return (
+          <div className="p-4 text-center text-gray-500">
+            Diagnose content coming soon
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
@@ -70,32 +122,51 @@ const Index = () => {
             </div>
           </div>
           <div className="flex gap-8 mt-6">
-            <button className="text-primary border-b-2 border-primary px-1 py-2">Overview</button>
-            <button className="text-gray-500 hover:text-gray-700 px-1 py-2">Medical Reports</button>
-            <button className="text-gray-500 hover:text-gray-700 px-1 py-2">Patients Overview</button>
-            <button className="text-gray-500 hover:text-gray-700 px-1 py-2">Diagnose</button>
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-1 py-2 transition-colors ${
+                activeTab === 'overview'
+                  ? 'text-primary border-b-2 border-primary'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('medical-reports')}
+              className={`px-1 py-2 transition-colors ${
+                activeTab === 'medical-reports'
+                  ? 'text-primary border-b-2 border-primary'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Medical Reports
+            </button>
+            <button
+              onClick={() => setActiveTab('patients-overview')}
+              className={`px-1 py-2 transition-colors ${
+                activeTab === 'patients-overview'
+                  ? 'text-primary border-b-2 border-primary'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Patients Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('diagnose')}
+              className={`px-1 py-2 transition-colors ${
+                activeTab === 'diagnose'
+                  ? 'text-primary border-b-2 border-primary'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Diagnose
+            </button>
           </div>
         </header>
         
         <main className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {stats.map((stat) => (
-              <StatCard key={stat.title} {...stat} />
-            ))}
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <RevenueChart />
-            </div>
-            <div>
-              <DiagnosisChart />
-            </div>
-          </div>
-          
-          <div className="mt-6">
-            <Schedule />
-          </div>
+          {renderTabContent()}
         </main>
       </div>
     </div>
@@ -103,3 +174,4 @@ const Index = () => {
 };
 
 export default Index;
+

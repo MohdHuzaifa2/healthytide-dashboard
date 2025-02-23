@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Area, AreaChart, ResponsiveContainer } from 'recharts';
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 interface StatCardProps {
   title: string;
@@ -8,6 +8,7 @@ interface StatCardProps {
   change: string;
   trend: number[];
   trendColor: string;
+  lightColor: string;
   isPositive?: boolean;
 }
 
@@ -17,12 +18,13 @@ const StatCard: React.FC<StatCardProps> = ({
   change,
   trend,
   trendColor,
+  lightColor,
   isPositive = true,
 }) => {
-  const data = trend.map((value, index) => ({ value, index }));
+  const data = trend.map((value, index) => ({ value, name: `Day ${index + 1}` }));
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-shadow duration-200">
+    <div className="bg-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300">
       <h3 className="text-gray-500 text-sm font-medium">{title}</h3>
       <div className="flex items-center justify-between mt-2">
         <div>
@@ -39,16 +41,30 @@ const StatCard: React.FC<StatCardProps> = ({
             <AreaChart data={data}>
               <defs>
                 <linearGradient id={`gradient-${title}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={trendColor} stopOpacity={0.2} />
-                  <stop offset="100%" stopColor={trendColor} stopOpacity={0} />
+                  <stop offset="0%" stopColor={lightColor} stopOpacity={0.7} />
+                  <stop offset="95%" stopColor={lightColor} stopOpacity={0} />
                 </linearGradient>
               </defs>
+              <Tooltip 
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="bg-white p-2 rounded-lg shadow-md border border-gray-100">
+                        <p className="text-sm text-gray-600">{payload[0].value}</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
               <Area
                 type="monotone"
                 dataKey="value"
                 stroke={trendColor}
                 fill={`url(#gradient-${title})`}
                 strokeWidth={2}
+                dot={{ fill: trendColor, r: 2 }}
+                activeDot={{ r: 4, strokeWidth: 0 }}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -59,3 +75,4 @@ const StatCard: React.FC<StatCardProps> = ({
 };
 
 export default StatCard;
+
