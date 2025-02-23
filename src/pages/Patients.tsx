@@ -1,76 +1,110 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Users, UserPlus, Search } from "lucide-react";
+import { Search, Filter, Plus, Phone, Video } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import Sidebar from "@/components/dashboard/Sidebar";
 
-// Mock data for patients
 const patients = [
-  { id: 1, name: "John Doe", age: 45, condition: "Hypertension", lastVisit: "2024-02-20" },
-  { id: 2, name: "Jane Smith", age: 32, condition: "Diabetes", lastVisit: "2024-02-18" },
-  { id: 3, name: "Mike Johnson", age: 28, condition: "Asthma", lastVisit: "2024-02-15" },
+  { 
+    id: 1, 
+    name: "Haylie Saris", 
+    condition: "Heart failure", 
+    status: "Chronic form", 
+    statusColor: "bg-yellow-100 text-yellow-800",
+    image: "/placeholder.svg"
+  },
+  { 
+    id: 2, 
+    name: "Nolan Korsgaard", 
+    condition: "Heart failure", 
+    status: "Acute form", 
+    statusColor: "bg-blue-100 text-blue-800",
+    image: "/placeholder.svg"
+  },
+  { 
+    id: 3, 
+    name: "Kianna Philips", 
+    condition: "Heart failure", 
+    status: "Remission", 
+    statusColor: "bg-green-100 text-green-800",
+    image: "/placeholder.svg"
+  }
 ];
 
 const Patients = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2">
-          <Users className="h-6 w-6" />
-          <h1 className="text-2xl font-semibold">Patients</h1>
-        </div>
-        <Link
-          to="/patients/new"
-          className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90"
-        >
-          <UserPlus className="h-4 w-4" />
-          Add Patient
-        </Link>
-      </div>
+    <div className="flex h-screen bg-gray-50">
+      <Sidebar />
+      <div className="flex-1 overflow-auto">
+        <div className="p-8">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <p className="text-gray-500">Hi Renata Modiook,</p>
+              <h1 className="text-2xl font-semibold mt-1">Patients</h1>
+            </div>
+            <Link
+              to="/patients/new"
+              className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full hover:opacity-90"
+            >
+              <Plus className="h-5 w-5" />
+              Add New Patient
+            </Link>
+          </div>
 
-      <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-        <Input
-          type="search"
-          placeholder="Search patients..."
-          className="pl-10 w-full md:max-w-sm"
-        />
-      </div>
+          <div className="flex gap-4 mb-6">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Input
+                type="search"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-full bg-white"
+              />
+            </div>
+            <button className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border">
+              <Filter className="h-5 w-5" />
+              Filter
+            </button>
+            <button className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border">
+              Sort by
+            </button>
+          </div>
 
-      <div className="bg-white rounded-lg shadow">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th className="px-6 py-3">Name</th>
-                <th className="px-6 py-3">Age</th>
-                <th className="px-6 py-3">Condition</th>
-                <th className="px-6 py-3">Last Visit</th>
-                <th className="px-6 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patients.map((patient) => (
-                <tr
-                  key={patient.id}
-                  className="border-b hover:bg-gray-50"
-                >
-                  <td className="px-6 py-4 font-medium">{patient.name}</td>
-                  <td className="px-6 py-4">{patient.age}</td>
-                  <td className="px-6 py-4">{patient.condition}</td>
-                  <td className="px-6 py-4">{patient.lastVisit}</td>
-                  <td className="px-6 py-4">
-                    <Link
-                      to={`/patients/${patient.id}`}
-                      className="text-primary hover:underline"
-                    >
-                      View Details
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="grid gap-4">
+            {patients.map((patient) => (
+              <Card key={patient.id} className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={patient.image} />
+                      <AvatarFallback>{patient.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h3 className="font-medium">{patient.name}</h3>
+                      <p className="text-sm text-gray-500">{patient.condition}</p>
+                    </div>
+                    <span className={`text-xs px-3 py-1 rounded-full ${patient.statusColor}`}>
+                      {patient.status}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <button className="p-2 hover:bg-gray-100 rounded-full">
+                      <Phone className="h-5 w-5 text-gray-600" />
+                    </button>
+                    <button className="p-2 hover:bg-gray-100 rounded-full">
+                      <Video className="h-5 w-5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </div>
