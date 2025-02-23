@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Patients from "./pages/Patients";
 import PatientDetails from "./pages/PatientDetails";
 import NotFound from "./pages/NotFound";
+import Sidebar from "./components/dashboard/Sidebar";
 
 const queryClient = new QueryClient();
 
@@ -15,10 +16,9 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <TooltipProvider>
-        <div className="min-h-screen bg-gray-50 font-sans">
-          <Toaster />
-          <Sonner />
-          <div className="flex">
+        <div className="flex h-screen overflow-hidden bg-gray-50 font-sans">
+          <Sidebar />
+          <main className="flex-1 overflow-auto">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/patients" element={<Patients />} />
@@ -31,7 +31,9 @@ const App = () => (
               <Route path="/settings" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </div>
+          </main>
+          <Toaster />
+          <Sonner />
         </div>
       </TooltipProvider>
     </BrowserRouter>
